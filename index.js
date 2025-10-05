@@ -1,15 +1,12 @@
-import sqlite3 from 'sqlite3';
-import express from 'express';
-import fs from 'fs';
+import { app } from './server.js';
 
-const app = express();
-const port = 8080;
-const pkg = JSON.parse(fs.readFileSync('package.json'))
-const version = 'v' + pkg.dependencies.express.slice(1)
-app.all('/', (request, response) => {
-response.set('Content-Type', 'text/html');
-response.send("<h1>Registration Desk!</h1>");
-});
-app.listen(port, () => {
-console.log(`Express ${version} Listening on Port ${port}`);
-}); 
+const TCP_PORT = 8080;
+
+try {
+  app.listen(TCP_PORT, () => {
+    console.log(`Running at http://localhost:${TCP_PORT}`);
+  });
+}
+catch (error) {
+  console.error(error);
+}
