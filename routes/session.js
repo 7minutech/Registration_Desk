@@ -7,6 +7,7 @@ router.get('/', (req, resp) => {
     db.all(`SELECT * FROM session`, [], (err, rows) => {
         if (err) {
             console.error(err.message);
+            return resp.status(500).json({ error: err.message });
         }
         let sessions = []
         rows.forEach(row => {
@@ -29,6 +30,7 @@ router.get('/:id', (req, resp) => {
             [sessionID], (err, rows) => {
         if (err) {
             console.error(err.message);
+            return resp.status(500).json({ error: err.message });
         }
         let sessions = []
         rows.forEach(row => {
