@@ -41,4 +41,19 @@ router.post('/', (req, resp) => {
     });
 });
 
+router.put('/:id', (req, resp) => {
+    if (req.headers["content-type"] != "application/json"){
+        return resp.status(400).json({ error: 'Content-Type must be application/json' });
+    }
+    const attendee = req.body
+    db.run(`update attendee set firstname = ?, lastname = ?, displayname = ? where _id = ?;`, 
+        [attendee.firstname, attendee.lastname, attendee.displayname, req.params.id], function (err) {
+        if (err) {
+            console.error(err.message);
+            return resp.status(500).json({ error: err.message });
+        }
+        resp.status(200).json({ success: "true"})
+    });
+});
+
 export default router;
