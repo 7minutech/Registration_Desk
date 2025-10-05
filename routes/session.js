@@ -25,8 +25,8 @@ router.get('/:id', (req, resp) => {
     db.all(`select attendee.firstname, attendee.lastname, attendee.displayname 
             from session join registration on session._id = registration.session_id
             join attendee on attendee._id = registration.attendee_id
-            where session._id = ${sessionID};`, 
-            [], (err, rows) => {
+            where session._id = ?;`, 
+            [sessionID], (err, rows) => {
         if (err) {
             console.error(err.message);
         }

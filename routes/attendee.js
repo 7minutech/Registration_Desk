@@ -4,8 +4,8 @@ import { db } from "../store/db.js"
 import { badgeNumber, isEnrolled } from '../utils/attendeeHelper.js';
 
 router.get('/:id', (req, resp) => {
-    let userID = req.params.id
-    db.all(`SELECT * FROM attendee where attendee._id = ${userID}`, [], (err, rows) => {
+    let attendeeID = req.params.id
+    db.all(`SELECT * FROM attendee where attendee._id = ?`, [attendeeID], (err, rows) => {
         if (err) {
             console.error(err.message);
         }
