@@ -53,6 +53,7 @@ function createNewAttendee(attendeesUrl, attendeeData){
                     success: function(resp){
                         if (resp.success){
                             alert("Attendee registered");
+                            window.location.href = attendeesUrl + `/${resp.attendeeID}/show`
                         } else{
                             alert("Attendee registeration failed")
                         }
