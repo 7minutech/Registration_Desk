@@ -71,7 +71,8 @@ function updateAttendee(attendeesUrl, attendeeData){
             dataType: "json",
             success: function(resp){
                 if (resp.success){
-                    alert("Attendee update");
+                    alert("Attendee update"); 
+                    window.location.href = attendeesUrl + `/${attendeeData.attendeeID}/show`
                 } else{
                     alert("Attendee update failed")
                 }

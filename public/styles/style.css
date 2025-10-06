@@ -8,3 +8,28 @@ button{
     padding: 5px;
     margin-top: 5px;
 }
+.container{
+    display: flex;
+    flex-direction: column;
+}
+.attendee_info_container{
+    width: 25%;
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid;
+    padding: 10px;
+}
+.attendee_info_container > * {
+    flex: 1;
+}
+.session_container{
+    flex: 3;
+}
+.sessions{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.sessions > *{
+    flex: 1;
+}

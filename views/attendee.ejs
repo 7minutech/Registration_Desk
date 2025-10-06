@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="/script.js"></script>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Main Page</a>
+    </nav>
+    <h2>Attendee Profile</h2>
+    <div class="container">
+        <% Object.entries(attendee).forEach(([key, value]) => { %>
+        <div class="attendee_info_container">
+            <p class="attendee_key"><%= key %></p>
+            <% if (key === "sessions"){ %>
+            <div class="session_container">
+                <ul class="sessions">
+                   <% attendee[key].forEach((session) => { %>
+                    <li><%= session.description %></li>
+                <% }) %>
+                </ul>
+            </div>
+            <% } else { %>
+                <p class="attendee_value"><%= value %></p>
+            <% } %>
+        </div>
+        <% })%>
+    </div>
+</body>
+</html>

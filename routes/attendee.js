@@ -2,6 +2,8 @@ import express from 'express'
 const router = express.Router();
 import { db } from "../store/db.js"
 import { badgeNumber, isEnrolled } from '../utils/attendeeHelper.js';
+import { getAttendeeRegistration } from '../utils/registrationHelper.js';
+
 
 router.get('/new', (req, resp) => {
     db.all("select _id, description from session", [], (err, rows) => {
@@ -19,6 +21,15 @@ router.get('/edit', (req, resp) => {
         }
         resp.render("edit_attendee", { attendees: rows });
     });
+});
+
+router.get('/:id/show', (req, resp) => {
+    getAttendeeRegistration(db, req.params.id, (err, result) => {
+        if (err){
+            return resp.status(err.status).json(err)
+        }
+        resp.render("attendee", {attendee: result})
+    })
 });
 
 router.get('/:id', (req, resp) => {
