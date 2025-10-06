@@ -1,1 +1,1 @@
-curl http://localhost:8080/registration/1
+curl http://localhost:8080/attendees/1/registrations

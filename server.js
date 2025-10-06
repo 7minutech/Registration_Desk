@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.use('/sessions', sessionRouter);
 app.use('/attendees', attendeeRouter);
-app.use('/registrations', registrationRouter)
+app.use('/attendees', registrationRouter)
 
 
 export { app }; 
