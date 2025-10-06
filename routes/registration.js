@@ -90,7 +90,7 @@ router.put('/:id/registrations', (req, resp) => {
             return resp.status(500).json({ error: err.message });
         }
         if (row){
-            return resp.status(400).json({ error: `attendeeID: ${attendeeID} already has sessionID: ${nextSessionID}` });
+            return resp.status(200).json({ success: true, message: "Already Registred" });
         }   
 
         db.run(`update registration set session_id = ? where attendee_id = ? and session_id = ?;`, 
@@ -125,5 +125,53 @@ router.put('/:id/registrations', (req, resp) => {
         })
     });
 });
+
+router.delete('/:id/registrations', (req, resp) => {
+    if (req.headers["content-type"] != "application/json"){
+        return resp.status(400).json({ error: 'Content-Type must be application/json' });
+    }
+    let sessionID = req.body.sessionID
+    let attendeeID = req.params.id
+    db.get(`SELECT session_id FROM attendee join registration on attendee._id = registration.attendee_id
+            where session_id = ? and attendee._id = ?;`, [sessionID, req.params.id], (err, row) => {
+        if (err) {
+            console.error(err.message);
+            return resp.status(500).json({ error: err.message });
+        }
+        if (!row){
+            return resp.status(200).json({ success: true, message: "Already Unregistred" });
+        }  
+        db.run(`delete from registration where attendee_id = ? and session_id = ?;`, 
+            [attendeeID, sessionID], function (err) {
+            if (err) {
+                console.error(err.message);
+                return resp.status(500).json({ error: err.message });
+            }
+            db.all(`select attendee.firstname, attendee.lastname, attendee.displayname, session_id, session.description
+                    from attendee join registration on attendee._id = registration.attendee_id
+                    join session on session._id = registration.session_id
+                    where attendee._id = ?;`, [req.params.id], (err, rows) => {
+                if (err) {
+                    console.error(err.message);
+                    return resp.status(500).json({ error: err.message });
+                }
+                if (rows.length == 0){
+                    return resp.status(404).json({ error: "Registration info not found" });
+                }
+                let first_row = rows[0];
+                const attendeSessionData = {firstname: first_row.firstname, lastname: first_row.lastname,
+                                            displayname: first_row.displayname, attendeeID: req.params.id}
+                const sessionsData = [];
+                rows.forEach(row => {
+                    sessionsData.push({id: row.session_id, description: row.description})
+                });
+                attendeSessionData.sessions = sessionsData
+                attendeSessionData.success = true
+
+                resp.status(200).json(attendeSessionData);
+            });
+        }) 
+    })
+})
 
 export default router
