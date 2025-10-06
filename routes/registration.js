@@ -139,7 +139,7 @@ router.delete('/:id/registrations', (req, resp) => {
             return resp.status(500).json({ error: err.message });
         }
         if (!row){
-            return resp.status(200).json({ success: true, message: "Already Unregistred" });
+            return resp.status(200).json({ success: true, message: "Already Unregistered" });
         }  
         db.run(`delete from registration where attendee_id = ? and session_id = ?;`, 
             [attendeeID, sessionID], function (err) {
