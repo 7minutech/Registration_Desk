@@ -37,7 +37,26 @@ router.post('/', (req, resp) => {
             console.error(err.message);
             return resp.status(500).json({ error: err.message });
         }
-        resp.status(201).json({ success: "true", id: this.lastID})
+        db.get(`SELECT * FROM attendee where attendee._id = ?`, [this.lastID], (err, row) => {
+            if (err) {
+                console.error(err.message);
+            }
+            if (!row){
+                return resp.status(404).json({ error: "Attendee not found"});
+            }
+            let createdAttendee = {firstname: row.firstname, lastname: row.lastname, displayname: row.displayname, attendeeID: this.lastID}
+            isEnrolled(row._id, (err, enrolled) => {
+                if (err){
+                    console.error(err.message);
+                    return;
+                }
+                if (enrolled){
+                    createdAttendee.badgeNumber = badgeNumber(row._id)
+                }
+                createdAttendee.success = true;
+                resp.json(createdAttendee);
+            })
+        });
     });
 });
 
@@ -52,7 +71,26 @@ router.put('/:id', (req, resp) => {
             console.error(err.message);
             return resp.status(500).json({ error: err.message });
         }
-        resp.status(200).json({ success: "true"})
+        db.get(`SELECT * FROM attendee where attendee._id = ?`, [req.params.id], (err, row) => {
+            if (err) {
+                console.error(err.message);
+            }
+            if (!row){
+                return resp.status(404).json({ error: "Attendee not found"});
+            }
+            let createdAttendee = {firstname: row.firstname, lastname: row.lastname, displayname: row.displayname, attendeeID: req.params.id}
+            isEnrolled(row._id, (err, enrolled) => {
+                if (err){
+                    console.error(err.message);
+                    return;
+                }
+                if (enrolled){
+                    createdAttendee.badgeNumber = badgeNumber(row._id)
+                }
+                createdAttendee.success = true;
+                resp.json(createdAttendee);
+            })
+        });
     });
 });
 
