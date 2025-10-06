@@ -3,6 +3,15 @@ const router = express.Router();
 import { db } from "../store/db.js"
 import { badgeNumber, isEnrolled } from '../utils/attendeeHelper.js';
 
+router.get('/new', (req, resp) => {
+    db.all("select _id, description from session", [], (err, rows) => {
+        if (err) {
+            return res.status(500).json({error: err.message});
+        }
+        resp.render("new_attendee", { sessions: rows });
+    });
+});
+
 router.get('/:id', (req, resp) => {
     let attendeeID = req.params.id
     db.get(`SELECT * FROM attendee where attendee._id = ?`, [attendeeID], (err, row) => {

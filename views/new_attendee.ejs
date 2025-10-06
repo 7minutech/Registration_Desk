@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="/script.js"></script>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <h2>New Attendee Registration</h2>
+        <form action="/attendees" method="POST" id="attendeeForm">
+            <label for="firstname">First Name: </label>
+            <input name="firstname" id="firstname" type="text">
+            <label for="lastname">Last Name: </label>
+            <input name="lastname" id="lastname" type="text">
+            <label>Display Name: </label>
+            <input name="displayname" id="displayname" type="text">
+            <label for="sessions"></label>
+            <label for="sessions"></label>
+            <label for="sessions">Choose a session:</label>
+            <select name="sessions" id="sessions">
+                <option value="0" selected>No Session</option>
+                <% sessions.forEach(session => { %>
+                    <option value="<%= session._id %>"><%= session.description %></option>
+                <% }); %>
+            </select>
+
+        <button type="submit">Create</button>
+    </form>
+</body>
+</html>
