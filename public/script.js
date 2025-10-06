@@ -22,6 +22,16 @@ $(document).ready(function(){
         updateAttendee(attendeesUrl, attendeeData)
         
     });
+    $("#firstname").change(function(){
+        const lastName = $("#lastname").val();
+        const firstName = $("#firstname").val();
+        $("#displayname").val(firstName + " " + lastName);
+    })
+    $("#lastname").change(function(){
+        const lastName = $("#lastname").val();
+        const firstName = $("#firstname").val();
+        $("#displayname").val(firstName + " " + lastName);
+    })
 });
 
 function createNewAttendee(attendeesUrl, attendeeData){
