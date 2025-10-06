@@ -7,7 +7,25 @@ $(document).ready(function(){
             lastname: $("#lastname").val(),
             displayname: $("#displayname").val()
         };
-        $.ajax({
+        createNewAttendee(attendeesUrl, attendeeData)
+        
+    });
+    $("#updateAttendeeForm").submit(function(e){
+        e.preventDefault();
+        const attendeesUrl = $("#updateAttendeeForm").attr("action")
+        const attendeeData = {
+            firstname: $("#firstname").val(),
+            lastname: $("#lastname").val(),
+            displayname: $("#displayname").val(),
+            attendeeID: $("#attendee").val()
+        };
+        updateAttendee(attendeesUrl, attendeeData)
+        
+    });
+});
+
+function createNewAttendee(attendeesUrl, attendeeData){
+    $.ajax({
             url: attendeesUrl,
             method: "POST",
             data: JSON.stringify(attendeeData),
@@ -42,6 +60,21 @@ $(document).ready(function(){
                 });
             }
         });
-        
-    });
-});
+}
+
+function updateAttendee(attendeesUrl, attendeeData){
+    $.ajax({
+            url: attendeesUrl + `/${attendeeData.attendeeID}`,
+            method: "PUT",
+            data: JSON.stringify(attendeeData),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(resp){
+                if (resp.success){
+                    alert("Attendee update");
+                } else{
+                    alert("Attendee update failed")
+                }
+            }
+        });
+}

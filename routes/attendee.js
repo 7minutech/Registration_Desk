@@ -12,6 +12,15 @@ router.get('/new', (req, resp) => {
     });
 });
 
+router.get('/edit', (req, resp) => {
+    db.all("select * from attendee order by lastname;", [], (err, rows) => {
+        if (err) {
+            return res.status(500).json({error: err.message});
+        }
+        resp.render("edit_attendee", { attendees: rows });
+    });
+});
+
 router.get('/:id', (req, resp) => {
     let attendeeID = req.params.id
     db.get(`SELECT * FROM attendee where attendee._id = ?`, [attendeeID], (err, row) => {

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="/script.js"></script>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Main Page</a>
+    </nav>
+    <h2>Update Attendee</h2>
+        <form action="/attendees" method="PUT" id="updateAttendeeForm">
+            <label for="attendee">Attendee</label>
+            <select id="attendee" name="attendee">
+                <% attendees.forEach(attendee => { %>
+                    <option value=<%= attendee._id %>><%= attendee.displayname %></option>
+                <%})%>
+            </select>
+            <label for="firstname">First Name: </label>
+            <input name="firstname" id="firstname" type="text">
+            <label for="lastname">Last Name: </label>
+            <input name="lastname" id="lastname" type="text">
+            <label>Display Name: </label>
+            <input name="displayname" id="displayname" type="text">
+
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>
