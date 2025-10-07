@@ -26,12 +26,38 @@ $(document).ready(function(){
         const lastName = $("#lastname").val();
         const firstName = $("#firstname").val();
         $("#displayname").val(firstName + " " + lastName);
-    })
+    });
     $("#lastname").change(function(){
         const lastName = $("#lastname").val();
         const firstName = $("#firstname").val();
         $("#displayname").val(firstName + " " + lastName);
-    })
+    });
+    $("#registrationDeleteButton").click(function(e){
+        e.preventDefault();
+        const mount = $("#sessionForm").attr("action")
+        const attendeeID = $("#attendee").val();
+        const sessionID = $("#session").val();
+        console.log(attendeeID)
+        console.log(sessionID)
+        const sessionData = {sessionID: sessionID}
+        const deleteRegistrationUrl = mount + `/${attendeeID}/registrations`;
+
+        $.ajax({
+            url: deleteRegistrationUrl,
+            method: "DELETE",
+            data: JSON.stringify(sessionData),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(resp){
+                if (resp.success){
+                    alert(resp.message); 
+                    // window.location.href = mount + `/${attendeeID}/show`
+                } else{
+                    alert("Attendee Unregistration failed")
+                }
+            }
+        });
+    });
 });
 
 function createNewAttendee(attendeesUrl, attendeeData){

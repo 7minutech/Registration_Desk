@@ -4,6 +4,23 @@ import { db } from "../store/db.js"
 import { isValidSessionID } from '../utils/sessionHelper.js';
 import { createRegistration, getAttendeeRegistration } from '../utils/registrationHelper.js';
 
+
+router.get('/registration/edit', (req, resp) => {
+    db.all("select * from attendee order by lastname;", [], (err, attendeeRows) => {
+        if (err) {
+            return resp.status(500).json({error: err.message});
+        }
+
+        db.all("select _id, description from session", [], (err, sessionRows) => {
+            if (err) {
+                return resp.status(500).json({error: err.message});
+            }
+            resp.render("edit_session", { sessions: sessionRows, attendees: attendeeRows });
+        });
+    });
+});
+
+
 router.get('/:id/registrations', (req, resp) => {
     getAttendeeRegistration(db, req.params.id, (err, result) => {
         if (err){
@@ -107,7 +124,7 @@ router.delete('/:id/registrations', (req, resp) => {
                     return resp.status(500).json({ error: err.message });
                 }
                 if (rows.length == 0){
-                    return resp.status(404).json({ error: "Registration info not found" });
+                    return resp.status(200).json({ success: "true", message: "Attendee succesfully unregistered; Attendee has no more sessions"});
                 }
                 let first_row = rows[0];
                 const attendeSessionData = {firstname: first_row.firstname, lastname: first_row.lastname,
@@ -116,8 +133,9 @@ router.delete('/:id/registrations', (req, resp) => {
                 rows.forEach(row => {
                     sessionsData.push({id: row.session_id, description: row.description})
                 });
-                attendeSessionData.sessions = sessionsData
-                attendeSessionData.success = true
+                attendeSessionData.sessions = sessionsData;
+                attendeSessionData.success = true;
+                attendeSessionData.message = "Attendee Successfully Unregistered";
 
                 resp.status(200).json(attendeSessionData);
             });

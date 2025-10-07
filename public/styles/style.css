@@ -33,3 +33,8 @@ button{
 .sessions > *{
     flex: 1;
 }
+.registration_buttons{
+    margin-top: 20px;
+    display: flex;
+    gap: 25px;
+}
