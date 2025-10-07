@@ -38,3 +38,6 @@ button{
     display: flex;
     gap: 25px;
 }
+#attending_table{
+    padding: 10px;
+}

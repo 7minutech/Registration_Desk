@@ -33,6 +33,7 @@ $(document).ready(function(){
         $("#displayname").val(firstName + " " + lastName);
     });
     $("#registrationDeleteButton").click(function(e){
+        console.log("delete click")
         e.preventDefault();
         const mount = $("#sessionForm").attr("action")
         const attendeeID = $("#attendee").val();
@@ -55,6 +56,39 @@ $(document).ready(function(){
                 } else{
                     alert("Attendee Unregistration failed")
                 }
+            }
+        });
+    });
+    $("#registrationListButton").click(function(e){
+        console.log("clicked list");
+        $("#attending_table").empty();
+        e.preventDefault();
+        const mount = "/sessions"
+        const sessionName = $("#session option:selected").text();
+        console.log(sessionName)
+        const sessionID = $("#session").val();
+        const getSessionsUrl = mount + `/${sessionID}`;
+        $.ajax({
+            url: getSessionsUrl,
+            method: "GET",
+            dataType: "json",
+            success: function(resp){
+                let row = document.createElement("tr");
+                let header = document.createElement("th");
+                $(row).append(header);
+                $(header).text(sessionName);
+                $("#attending_table").append(row)
+                resp.forEach(session => {
+                    let row = document.createElement("tr");
+                    let col = document.createElement("td")
+                    $(col).text(session["displayname"])
+                    $(row).append(col)
+                    $("#attending_table").append(row)
+                });
+            },
+            error: function(_, status, error){
+                console.log(`Request faild status: ${status}, error: ${error}`);
+                alert("Failed to get list")
             }
         });
     });
