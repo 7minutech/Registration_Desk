@@ -92,6 +92,32 @@ $(document).ready(function(){
             }
         });
     });
+    $("#registartionUpdateButton").click(function(e){
+        e.preventDefault();
+        const mount = $("#sessionForm").attr("action")
+        const attendeeID = $("#attendee").val();
+        const sessionID = $("#session").val();
+        console.log(attendeeID)
+        console.log(sessionID)
+        const sessionData = {sessionID: sessionID}
+        const updateRegistrationUrl = mount + `/${attendeeID}/registrations`;
+
+        $.ajax({
+            url: updateRegistrationUrl,
+            method: "POST",
+            data: JSON.stringify(sessionData),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(resp){
+                if (resp.success){
+                    alert("Attendee updated successfully"); 
+                    window.location.href = mount + `/${attendeeID}/show`;
+                } else{
+                    alert("Attendee update failed");
+                }
+            }
+        });
+    });
 });
 
 function createNewAttendee(attendeesUrl, attendeeData){
